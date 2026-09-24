@@ -296,7 +296,7 @@ function PriceAndActions({
 
       <div className="flex flex-col gap-2 border-t border-border pt-4">
         <span className="text-sm text-muted">分享這個物件</span>
-        <ShareButtons title={listing.title} />
+        <ShareButtons title={listing.title} imageUrl={listing.images[0]} />
       </div>
 
       <div className="flex items-center gap-3 border-t border-border pt-4">

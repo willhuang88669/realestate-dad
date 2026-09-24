@@ -4,6 +4,18 @@ import { useEffect, useState } from "react";
 import { LinkIcon, CheckIcon, ShareIcon } from "@heroicons/react/24/outline";
 import LineIcon from "@/components/LineIcon";
 
+async function tryBuildImageFile(imageUrl: string | undefined): Promise<File | null> {
+  if (!imageUrl) return null;
+  try {
+    const res = await fetch(imageUrl);
+    const blob = await res.blob();
+    return new File([blob], "listing.jpg", { type: blob.type || "image/jpeg" });
+  } catch {
+    // Cross-origin image without CORS headers (e.g. this prototype's stock photos) — share text/link instead.
+    return null;
+  }
+}
+
 function FacebookGlyph() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -12,7 +24,7 @@ function FacebookGlyph() {
   );
 }
 
-export default function ShareButtons({ title }: { title: string }) {
+export default function ShareButtons({ title, imageUrl }: { title: string; imageUrl?: string }) {
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState("");
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -35,8 +47,14 @@ export default function ShareButtons({ title }: { title: string }) {
   }
 
   async function nativeShare() {
+    const imageFile = await tryBuildImageFile(imageUrl);
     try {
-      await navigator.share({ title, url });
+      if (imageFile && navigator.canShare?.({ files: [imageFile] })) {
+        // With a photo attached, apps like Instagram offer "Add to Story" directly.
+        await navigator.share({ title, files: [imageFile] });
+      } else {
+        await navigator.share({ title, url });
+      }
     } catch {
       // User cancelled the share sheet, or the API is unavailable — no-op.
     }
@@ -88,8 +106,6 @@ export default function ShareButtons({ title }: { title: string }) {
 
       <a
         href={threadsShareUrl}
-        target="_blank"
-        rel="noopener noreferrer"
         aria-label={`分享「${title}」到 Threads`}
         className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-black text-base font-bold text-white shadow-sm hover:brightness-125"
       >
