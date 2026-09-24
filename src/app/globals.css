@@ -1,26 +1,111 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 奢華風 Light Mode（預設）：暖白底 + 金色點綴 + 襯線大標 */
+  color-scheme: light;
+  --color-ink: #171410;
+  --color-muted: #78716c;
+  --color-paper: #ffffff;
+  --color-canvas: #f7f3ec;
+  --color-border: #e7e0d3;
+  --color-navy: #b8873c;
+  --color-navy-foreground: #171410;
+  --color-yellow: #b8873c;
+  --color-yellow-foreground: #171410;
+  --color-rent: #0e9f6e;
+  --color-rent-foreground: #ffffff;
+  --color-sale: #2563eb;
+  --color-sale-foreground: #ffffff;
+  --color-danger: #dc2626;
+  /* 僅用於後台「進行中」類狀態徽章（審核中／已約看），與金色 CTA 區隔 */
+  --color-progress: #b45309;
+  --color-progress-foreground: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* 奢華風 Dark Mode：深黑底 + 金色點綴 + 襯線大標。
+   裝置偏好深色、且使用者沒手動選過 light 時套用。 */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-ink: #f3efe6;
+    --color-muted: #a39c8f;
+    --color-paper: #1a1a1d;
+    --color-canvas: #0b0b0c;
+    --color-border: #2c2b29;
+    --color-navy: #d9b26a;
+    --color-navy-foreground: #171410;
+    --color-yellow: #d9b26a;
+    --color-yellow-foreground: #171410;
+    --color-progress: #92400e;
   }
 }
 
+/* 使用者手動選擇 dark，不論裝置偏好為何都套用 */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-ink: #f3efe6;
+  --color-muted: #a39c8f;
+  --color-paper: #1a1a1d;
+  --color-canvas: #0b0b0c;
+  --color-border: #2c2b29;
+  --color-navy: #d9b26a;
+  --color-navy-foreground: #171410;
+  --color-yellow: #d9b26a;
+  --color-yellow-foreground: #171410;
+  --color-progress: #92400e;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-paper: var(--color-paper);
+  --color-canvas: var(--color-canvas);
+  --color-border: var(--color-border);
+  --color-navy: var(--color-navy);
+  --color-navy-foreground: var(--color-navy-foreground);
+  --color-yellow: var(--color-yellow);
+  --color-yellow-foreground: var(--color-yellow-foreground);
+  --color-rent: var(--color-rent);
+  --color-rent-foreground: var(--color-rent-foreground);
+  --color-sale: var(--color-sale);
+  --color-sale-foreground: var(--color-sale-foreground);
+  --color-danger: var(--color-danger);
+  --color-progress: var(--color-progress);
+  --color-progress-foreground: var(--color-progress-foreground);
+  --font-sans: var(--font-noto-sans-tc);
+  --font-serif: var(--font-noto-serif-tc);
+}
+
+html {
+  /* 使用者多為房東，年齡層偏高，全站字級（含手機版）整體放大 */
+  font-size: 125%; /* 20px base */
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.input {
+  @apply w-full rounded-lg border border-border bg-paper px-3 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-navy focus:outline-none;
+}
+
+/* Leaflet default marker icons resolve via CDN-relative paths that break
+   under bundlers; markers are replaced with a custom divIcon instead, so
+   only base map chrome (tiles, controls, popups) needs Leaflet's CSS. */
+.leaflet-container {
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
