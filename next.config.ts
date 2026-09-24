@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
   basePath,
   assetPrefix: basePath ? `${basePath}/` : undefined,
   trailingSlash: true,
+  // Exposed to the browser bundle so client components can prefix local /public asset
+  // URLs by hand — unoptimized next/image does not add basePath automatically.
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   turbopack: {
     root: __dirname,
   },

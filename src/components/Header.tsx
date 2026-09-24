@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import ThemeToggle from "@/components/ThemeToggle";
 import LineIcon from "@/components/LineIcon";
 import { LINE_CONTACT_URL, LINE_COMMUNITY_URL } from "@/config/line";
+import { withBasePath } from "@/lib/basePath";
 
 const NAV_LINKS = [
   { href: "/", label: "找房源" },
@@ -28,8 +30,16 @@ export default function Header() {
       <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-6">
         <Link
           href="/"
-          className="shrink-0 whitespace-nowrap font-serif text-base font-medium tracking-wide text-ink sm:text-xl"
+          className="flex shrink-0 items-center gap-2 whitespace-nowrap font-serif text-base font-medium tracking-wide text-ink sm:text-xl"
         >
+          <Image
+            src={withBasePath("/logo.png")}
+            alt="群義房屋 | 黃振嘉"
+            width={36}
+            height={36}
+            className="h-8 w-8 shrink-0 rounded-full sm:h-9 sm:w-9"
+            priority
+          />
           群義房屋 | 黃振嘉
         </Link>
 

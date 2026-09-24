@@ -35,11 +35,13 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
+    images: [{ url: "logo.png", width: 1024, height: 1024, alt: SITE_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    images: ["logo.png"],
   },
 };
 
