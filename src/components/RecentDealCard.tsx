@@ -34,7 +34,7 @@ export default function RecentDealCard({ deal }: { deal: RecentDeal }) {
         <p className="text-sm text-muted">
           {listing.size} 坪・{listing.layout}
         </p>
-        <div className="mt-auto flex items-center justify-between pt-2">
+        <div className="mt-auto flex flex-col gap-0.5 pt-2">
           <span className="tabular-nums text-base font-bold text-navy">
             {formatPrice({ type: listing.type, price: deal.price })}
           </span>
