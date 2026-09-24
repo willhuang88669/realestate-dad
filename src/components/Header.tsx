@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
-      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-6">
+      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 pl-4 pr-2 sm:px-6">
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2 whitespace-nowrap font-serif text-base font-medium tracking-wide text-ink sm:text-xl"
@@ -74,7 +74,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2 sm:gap-3">
           <Link
             href="/post"
             className="hidden shrink-0 items-center rounded-full border border-ink px-5 py-2.5 text-sm font-bold text-ink transition hover:bg-ink hover:text-paper cursor-pointer sm:inline-flex"
@@ -89,12 +89,12 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? "關閉選單" : "開啟選單"}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-canvas cursor-pointer sm:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-ink hover:bg-canvas cursor-pointer sm:hidden"
           >
             {open ? (
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <XMarkIcon className="h-5 w-5" aria-hidden="true" />
             ) : (
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              <Bars3Icon className="h-5 w-5" aria-hidden="true" />
             )}
           </button>
         </div>
