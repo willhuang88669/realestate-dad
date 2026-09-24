@@ -85,7 +85,7 @@ export default function InquiryModal({
                 <CheckCircleIcon className="h-14 w-14 text-rent" aria-hidden="true" />
                 <p className="text-base font-bold text-ink">已送出！</p>
                 <p className="text-sm text-muted">
-                  仲介收到您的詢問後會盡快與您聯繫（此為原型頁面，尚未真正送出）。
+                  仲介收到您的詢問後會盡快與您聯繫。
                 </p>
                 <button
                   type="button"

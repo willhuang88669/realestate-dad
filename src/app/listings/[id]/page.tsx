@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,6 +13,43 @@ import ShareButtons from "@/components/ShareButtons";
 
 export function generateStaticParams() {
   return LISTINGS.map((l) => ({ id: l.id }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const listing = getListingById(id);
+  if (!listing) return {};
+
+  const deal = getDealByListingId(listing.id);
+  const closedVerb = listing.type === "rent" ? "出租" : "售出";
+  const priceText = deal
+    ? `成交價 ${formatPrice({ type: listing.type, price: deal.price })}`
+    : formatPrice(listing);
+  const ogTitle = `${listing.title}｜${priceText}`;
+  const description = `${listing.area}・${listing.displayAddress}・${listing.size} 坪・${listing.layout}${
+    deal ? `・已${closedVerb}` : ""
+  }`;
+
+  return {
+    title: listing.title,
+    description,
+    openGraph: {
+      title: ogTitle,
+      description,
+      type: "website",
+      images: [{ url: listing.images[0], width: 1200, height: 800, alt: listing.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description,
+      images: [listing.images[0]],
+    },
+  };
 }
 
 const DETAIL_ROWS: { key: "size" | "layout" | "floor" | "age"; label: string }[] = [
@@ -253,7 +291,7 @@ function PriceAndActions({
         <InquiryModal listingTitle={listing.title} inquiryCount={listing.inquiryCount} />
       )}
 
-      <div className="flex items-center justify-between border-t border-border pt-4">
+      <div className="flex flex-col gap-2 border-t border-border pt-4">
         <span className="text-sm text-muted">分享這個物件</span>
         <ShareButtons title={listing.title} />
       </div>

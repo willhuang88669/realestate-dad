@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import type { Listing } from "@/data/listings";
 import { formatPrice, typeLabel } from "@/lib/format";
+
+const SWIPE_THRESHOLD = 40;
 
 export default function PopularCarousel({ listings }: { listings: Listing[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const dragStartX = useRef<number | null>(null);
+  const dragDistance = useRef(0);
 
   useEffect(() => {
     if (listings.length <= 1 || paused) return;
@@ -31,6 +34,36 @@ export default function PopularCarousel({ listings }: { listings: Listing[] }) {
     setIndex((i) => (i + delta + listings.length) % listings.length);
   }
 
+  function handlePointerDown(e: React.PointerEvent) {
+    dragStartX.current = e.clientX;
+    dragDistance.current = 0;
+    setPaused(true);
+  }
+
+  function handlePointerMove(e: React.PointerEvent) {
+    if (dragStartX.current === null) return;
+    dragDistance.current = e.clientX - dragStartX.current;
+  }
+
+  function handlePointerUp() {
+    if (dragStartX.current !== null) {
+      if (dragDistance.current <= -SWIPE_THRESHOLD) {
+        go(1);
+      } else if (dragDistance.current >= SWIPE_THRESHOLD) {
+        go(-1);
+      }
+    }
+    dragStartX.current = null;
+    setPaused(false);
+  }
+
+  function handleClickCapture(e: React.MouseEvent) {
+    if (Math.abs(dragDistance.current) > SWIPE_THRESHOLD) {
+      e.preventDefault();
+    }
+    dragDistance.current = 0;
+  }
+
   return (
     <section
       className="mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-6 sm:px-6 sm:pt-8"
@@ -41,13 +74,24 @@ export default function PopularCarousel({ listings }: { listings: Listing[] }) {
         熱門<span className="text-navy">物件</span>・詢問度最高
       </h2>
 
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl sm:aspect-[16/9]">
+      <div
+        className="relative aspect-[4/3] w-full cursor-grab touch-pan-y select-none overflow-hidden rounded-3xl active:cursor-grabbing sm:aspect-[16/9]"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={() => {
+          dragStartX.current = null;
+          setPaused(false);
+        }}
+        onClickCapture={handleClickCapture}
+      >
         {listings.map((listing, i) => (
           <Link
             key={listing.id}
             href={`/listings/${listing.id}`}
             aria-hidden={i !== index}
             tabIndex={i === index ? 0 : -1}
+            draggable={false}
             className={`group absolute inset-0 transition-opacity duration-700 ${
               i === index ? "z-10 opacity-100" : "pointer-events-none opacity-0"
             }`}
@@ -57,8 +101,9 @@ export default function PopularCarousel({ listings }: { listings: Listing[] }) {
               alt={listing.title}
               fill
               sizes="(min-width: 1280px) 1280px, 100vw"
-              className="object-cover"
+              className="pointer-events-none object-cover transition duration-300 group-hover:scale-105"
               priority={i === 0}
+              draggable={false}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
@@ -78,27 +123,6 @@ export default function PopularCarousel({ listings }: { listings: Listing[] }) {
             </div>
           </Link>
         ))}
-
-        {listings.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="上一筆"
-              className="absolute left-3 top-1/2 z-20 -translate-y-1/2 cursor-pointer rounded-full bg-paper/90 p-2.5 shadow-lg hover:bg-paper"
-            >
-              <ChevronLeftIcon className="h-5 w-5 text-ink" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              onClick={() => go(1)}
-              aria-label="下一筆"
-              className="absolute right-3 top-1/2 z-20 -translate-y-1/2 cursor-pointer rounded-full bg-paper/90 p-2.5 shadow-lg hover:bg-paper"
-            >
-              <ChevronRightIcon className="h-5 w-5 text-ink" aria-hidden="true" />
-            </button>
-          </>
-        )}
       </div>
 
       {listings.length > 1 && (

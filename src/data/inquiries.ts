@@ -16,7 +16,7 @@ export interface Inquiry {
 export const INQUIRIES: Inquiry[] = [
   {
     id: "q1",
-    listingTitle: "大安森林公園旁 3房電梯宅",
+    listingTitle: "福星公園旁 3房電梯宅",
     listingId: "1",
     name: "王小明",
     phone: "0912-345-678",
@@ -27,7 +27,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q2",
-    listingTitle: "信義區質感兩房",
+    listingTitle: "北屯區質感兩房",
     listingId: "2",
     name: "陳怡君",
     phone: "0922-111-333",
@@ -37,7 +37,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q3",
-    listingTitle: "板橋捷運宅 三房兩衛",
+    listingTitle: "大里中興商圈 三房兩衛",
     listingId: "3",
     name: "李冠廷",
     phone: "0933-222-444",
@@ -48,7 +48,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q4",
-    listingTitle: "中山商圈 Loft 套房",
+    listingTitle: "一中街商圈 Loft 套房",
     listingId: "4",
     name: "張雅婷",
     phone: "0955-333-555",
@@ -58,7 +58,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q5",
-    listingTitle: "新莊透天別墅",
+    listingTitle: "太平透天別墅",
     listingId: "5",
     name: "黃志豪",
     phone: "0966-444-666",
@@ -68,7 +68,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q6",
-    listingTitle: "公館學區溫馨兩房",
+    listingTitle: "中興大學學區溫馨兩房",
     listingId: "6",
     name: "林詩涵",
     phone: "0977-555-777",
@@ -79,7 +79,7 @@ export const INQUIRIES: Inquiry[] = [
   },
   {
     id: "q7",
-    listingTitle: "內湖科技園區美寓",
+    listingTitle: "台中軟體園區美寓",
     listingId: "7",
     name: "周柏宇",
     phone: "0988-666-888",

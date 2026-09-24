@@ -7,13 +7,15 @@ import {
   MapIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
-import { LISTINGS, getListingById, type ListingType } from "@/data/listings";
+import { getListingById, type ListingType } from "@/data/listings";
 import { RECENT_DEALS, getDealByListingId, type RecentDeal } from "@/data/recentDeals";
 import { EMPTY_FILTERS, applyFilters, type Filters, type MapBounds } from "@/lib/filters";
+import { useListingsStore } from "@/lib/listingsStore";
 import FilterBar from "@/components/FilterBar";
 import ListingCard from "@/components/ListingCard";
 import RecentDealCard from "@/components/RecentDealCard";
 import PopularCarousel from "@/components/PopularCarousel";
+import StatsBar from "@/components/StatsBar";
 
 const ListingsMap = dynamic(() => import("@/components/ListingsMap"), {
   ssr: false,
@@ -25,6 +27,7 @@ const ListingsMap = dynamic(() => import("@/components/ListingsMap"), {
 });
 
 export default function HomePage() {
+  const { publishedListings } = useListingsStore();
   const [activeType, setActiveType] = useState<ListingType>("sale");
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [showMap, setShowMap] = useState(false);
@@ -39,10 +42,11 @@ export default function HomePage() {
     setBoxSelectActive(false);
   }
 
-  // 已成交（售出/出租）的物件不列入可詢問的房源列表，僅出現在「最近成交」區塊。
+  // 已成交（售出/出租）的物件、後台已下架或刪除的物件不列入可詢問的房源列表，
+  // 已成交的僅出現在「最近成交」區塊；上架/下架/刪除狀態改自後台「我的房源」。
   const activeListings = useMemo(
-    () => LISTINGS.filter((l) => !getDealByListingId(l.id)),
-    [],
+    () => publishedListings.filter((l) => !getDealByListingId(l.id)),
+    [publishedListings],
   );
 
   const filteredByForm = useMemo(
@@ -69,6 +73,10 @@ export default function HomePage() {
     <>
       <PopularCarousel listings={popularListings} />
 
+      <div className="pt-6 sm:pt-8">
+        <StatsBar />
+      </div>
+
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <h1 className="font-serif text-4xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
@@ -77,7 +85,7 @@ export default function HomePage() {
             <span className="text-navy">理想</span>好宅
           </h1>
           <p className="max-w-xs text-sm text-muted sm:text-right">
-            {activeListings.length} 筆可詢問房源，帶你找到真正屬於你的家。（僅供畫面預覽，資料為假資料）
+            {activeListings.length} 筆可詢問房源，帶你找到真正屬於你的家。
           </p>
         </div>
 
@@ -104,7 +112,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-row items-center justify-between gap-2 sm:gap-3">
           <FilterBar
             type={activeType}
             filters={filters}
@@ -115,7 +123,7 @@ export default function HomePage() {
             resultCount={filteredByForm.length}
           />
 
-          <div className="flex items-center gap-2 self-end sm:self-auto">
+          <div className="flex shrink-0 items-center gap-2">
             {mapBounds && (
               <button
                 type="button"
@@ -200,7 +208,7 @@ export default function HomePage() {
             <h2 className="text-xl font-black tracking-tight text-ink sm:text-2xl">
               最近成交
             </h2>
-            <p className="mt-1 text-sm text-muted">近期成功媒合的物件・僅供畫面預覽，資料為假資料</p>
+            <p className="mt-1 text-sm text-muted">近期成功媒合的物件</p>
           </div>
 
           <RecentDealsGroup title="售出" deals={saleDeals} />

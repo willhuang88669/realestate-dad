@@ -27,7 +27,7 @@ export default function PostListingPage() {
         <h1 className="text-2xl font-black text-ink">已收到，審核中</h1>
         <p className="text-sm text-muted">
           {submittedTitle ? `「${submittedTitle}」` : "您的房源"}
-          已送出，仲介會盡快審核並透過您留下的電話或 LINE 與您聯繫（此為原型頁面，尚未真正送出或儲存）。
+          已送出，仲介會盡快審核並透過您留下的電話或 LINE 與您聯繫。
         </p>
         <div className="mt-2 flex gap-3">
           <button
@@ -54,7 +54,7 @@ export default function PostListingPage() {
         刊登房源
       </h1>
       <p className="mt-1 text-sm text-muted">
-        填寫房屋資訊，送出後由仲介審核（此為原型頁面，資料不會真的儲存）
+        填寫房屋資訊，送出後由仲介審核
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-6">
@@ -64,7 +64,7 @@ export default function PostListingPage() {
               name="title"
               required
               type="text"
-              placeholder="例如：大安森林公園旁 3 房電梯宅"
+              placeholder="例如：福星公園旁 3 房電梯宅"
               className="input"
             />
           </Field>
@@ -122,11 +122,11 @@ export default function PostListingPage() {
             </select>
           </Field>
 
-          <Field label="地址" hint="僅需填到路段，例如「大安區辛亥路二段」，完整門牌不會公開">
+          <Field label="地址" hint="僅需填到路段，例如「西屯區福星路」，完整門牌不會公開">
             <input
               name="address"
               type="text"
-              placeholder="例如：大安區辛亥路二段"
+              placeholder="例如：西屯區福星路"
               className="input"
             />
           </Field>

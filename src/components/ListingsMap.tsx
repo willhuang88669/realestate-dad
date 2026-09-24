@@ -11,7 +11,7 @@ import { getDealByListingId } from "@/data/recentDeals";
 import { formatPrice } from "@/lib/format";
 import type { MapBounds } from "@/lib/filters";
 
-const TAIPEI_CENTER: [number, number] = [25.035, 121.53];
+const TAICHUNG_CENTER: [number, number] = [24.147, 120.674];
 
 function priceIcon(listing: Listing, highlighted: boolean) {
   const deal = getDealByListingId(listing.id);
@@ -148,7 +148,7 @@ export default function ListingsMap({
 
   return (
     <MapContainer
-      center={TAIPEI_CENTER}
+      center={TAICHUNG_CENTER}
       zoom={12}
       scrollWheelZoom
       className="h-full w-full"

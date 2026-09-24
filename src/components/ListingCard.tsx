@@ -51,15 +51,9 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           {listing.displayAddress}
         </p>
 
-        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted">
-          <span>{listing.size} 坪</span>
-          <span className="text-border">・</span>
-          <span>{listing.layout}</span>
-          <span className="text-border">・</span>
-          <span>{listing.floor}</span>
-          <span className="text-border">・</span>
-          <span>屋齡 {listing.age} 年</span>
-        </div>
+        <p className="mt-1 text-sm text-muted">
+          {listing.size} 坪・{listing.layout}・{listing.floor}・屋齡 {listing.age} 年
+        </p>
 
         <div className="mt-auto flex items-center justify-between pt-2">
           <span className="tabular-nums text-lg font-bold text-navy">

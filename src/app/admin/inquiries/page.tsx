@@ -51,12 +51,9 @@ export default function AdminInquiriesPage() {
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8">
-      <div>
-        <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">
-          後台管理
-        </h1>
-        <p className="mt-1 text-sm text-muted">僅供內部測試，尚未做登入驗證</p>
-      </div>
+      <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">
+        後台管理
+      </h1>
 
       <AdminNav />
 

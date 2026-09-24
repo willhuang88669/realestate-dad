@@ -27,7 +27,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
       <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-6">
         <Link href="/" className="shrink-0 font-serif text-xl font-medium tracking-wide text-ink">
-          振嘉房源網
+          群義房屋 | 黃振嘉
         </Link>
 
         <nav className="hidden items-center justify-center gap-1 sm:flex">

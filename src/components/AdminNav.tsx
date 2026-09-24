@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
+  { href: "/admin/listings", label: "我的房源" },
   { href: "/admin", label: "待審核房源" },
   { href: "/admin/inquiries", label: "詢問紀錄" },
 ];

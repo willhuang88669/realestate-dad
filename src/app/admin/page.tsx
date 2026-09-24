@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { CheckIcon, XMarkIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
-import { PENDING_LISTINGS, type PendingListing, type ReviewStatus } from "@/data/pendingListings";
+import type { ReviewStatus } from "@/data/pendingListings";
 import type { ListingType } from "@/data/listings";
 import { formatPrice, typeLabel, telHref } from "@/lib/format";
+import { useListingsStore } from "@/lib/listingsStore";
 import AdminNav from "@/components/AdminNav";
 import PillFilter from "@/components/PillFilter";
 
@@ -19,12 +21,17 @@ type TypeFilter = "all" | ListingType;
 type StatusFilter = "all" | ReviewStatus;
 
 export default function AdminPendingListingsPage() {
-  const [listings, setListings] = useState<PendingListing[]>(PENDING_LISTINGS);
+  const { pendingListings: listings, setPendingStatus, approvePendingListing } =
+    useListingsStore();
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
   function setStatus(id: string, status: ReviewStatus) {
-    setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
+    if (status === "approved") {
+      approvePendingListing(id);
+    } else {
+      setPendingStatus(id, status);
+    }
   }
 
   const pendingCount = listings.filter((l) => l.status === "pending").length;
@@ -41,12 +48,9 @@ export default function AdminPendingListingsPage() {
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8">
-      <div>
-        <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">
-          後台管理
-        </h1>
-        <p className="mt-1 text-sm text-muted">僅供內部測試，尚未做登入驗證</p>
-      </div>
+      <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">
+        後台管理
+      </h1>
 
       <AdminNav />
 
@@ -134,6 +138,14 @@ export default function AdminPendingListingsPage() {
                   </a>
                   ）・{listing.submittedAt}
                 </p>
+                {listing.status === "approved" && (
+                  <Link
+                    href="/admin/listings"
+                    className="mt-1 inline-block text-sm font-bold text-rent hover:underline"
+                  >
+                    已加入「我的房源」→
+                  </Link>
+                )}
               </div>
 
               <div className="flex shrink-0 items-center gap-2 sm:flex-col sm:items-stretch">

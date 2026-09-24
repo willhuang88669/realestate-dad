@@ -85,7 +85,7 @@ export default function ImageUploadPreview({
         }}
       />
       <p className="text-sm text-muted">
-        僅供預覽，此原型頁面不會真的上傳照片到伺服器。已選擇 {images.length} 張。
+        已選擇 {images.length} 張。
       </p>
     </div>
   );

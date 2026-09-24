@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
 import Header from "@/components/Header";
+import { ListingsStoreProvider } from "@/lib/listingsStore";
 import "./globals.css";
 
 const notoSansTC = Noto_Sans_TC({
@@ -15,9 +16,30 @@ const notoSerifTC = Noto_Serif_TC({
   weight: "variable",
 });
 
+const SITE_URL = "https://willhuang88669.github.io/realestate-dad/";
+const SITE_TITLE = "群義房屋 | 黃振嘉";
+const SITE_DESCRIPTION = "台中租屋、售屋房源資訊，歡迎聯繫黃振嘉了解更多物件。";
+
 export const metadata: Metadata = {
-  title: "振嘉房源網 | 房源 Prototype",
-  description: "振嘉房源網 UI/UX 原型 — 僅供畫面與體驗確認，資料皆為假資料",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: `%s | ${SITE_TITLE}`,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "zh_TW",
+    siteName: SITE_TITLE,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -33,8 +55,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}`,
           }}
         />
-        <Header />
-        <main className="flex-1">{children}</main>
+        <ListingsStoreProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+        </ListingsStoreProvider>
       </body>
     </html>
   );
