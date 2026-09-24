@@ -93,9 +93,8 @@ export default async function ListingDetailPage({
         <div className="flex flex-col gap-6">
           <ImageCarousel images={listing.images} alt={listing.title} />
 
-          <div className="flex flex-col gap-6 lg:hidden">
+          <div className="lg:hidden">
             <PriceAndActions listing={listing} deal={deal} badgeClass={badgeClass} />
-            <SimilarListings listings={similarListings} />
           </div>
 
           <div>
@@ -176,6 +175,10 @@ export default async function ListingDetailPage({
               </div>
             </div>
           )}
+
+          <div className="lg:hidden">
+            <SimilarListings listings={similarListings} />
+          </div>
         </div>
 
         <aside className="hidden flex-col lg:flex">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { ListingsStoreProvider } from "@/lib/listingsStore";
 import "./globals.css";
 
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ListingsStoreProvider>
           <Header />
           <main className="flex-1">{children}</main>
+          <Footer />
         </ListingsStoreProvider>
       </body>
     </html>
