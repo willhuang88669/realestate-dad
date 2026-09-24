@@ -70,7 +70,7 @@ export default function PopularCarousel({ listings }: { listings: Listing[] }) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <h2 className="font-serif text-3xl font-medium leading-tight tracking-tight text-ink sm:text-5xl">
+      <h2 className="whitespace-nowrap font-serif text-2xl font-medium leading-tight tracking-tight text-ink sm:text-5xl">
         熱門<span className="text-navy">物件</span>・詢問度最高
       </h2>
 
