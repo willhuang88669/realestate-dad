@@ -150,12 +150,12 @@ export default function AdminInquiriesPage() {
               <p className="text-sm text-ink/80">{inquiry.message}</p>
 
               <div className="mt-2 flex flex-col gap-2 border-t border-border pt-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between">
                   <label htmlFor={`reply-${inquiry.id}`} className="text-sm font-bold text-ink">
                     我的回覆（會公開顯示在房源頁面）
                   </label>
                   <span
-                    className={`rounded-full px-2 py-0.5 text-sm font-bold ${
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-sm font-bold ${
                       inquiry.reply
                         ? "bg-rent text-rent-foreground"
                         : "bg-canvas text-muted"

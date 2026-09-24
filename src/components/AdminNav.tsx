@@ -13,21 +13,23 @@ export default function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <div className="inline-flex w-fit rounded-full border border-border bg-paper p-1 shadow-sm">
-      {TABS.map((tab) => {
-        const active = pathname === tab.href;
-        return (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className={`rounded-full px-5 py-2 text-sm font-bold transition ${
-              active ? "bg-navy text-navy-foreground" : "text-muted hover:text-ink"
-            }`}
-          >
-            {tab.label}
-          </Link>
-        );
-      })}
+    <div className="w-full overflow-x-auto sm:w-fit">
+      <div className="inline-flex w-max rounded-full border border-border bg-paper p-1 shadow-sm">
+        {TABS.map((tab) => {
+          const active = pathname === tab.href;
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={`shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-bold transition sm:px-5 ${
+                active ? "bg-navy text-navy-foreground" : "text-muted hover:text-ink"
+              }`}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

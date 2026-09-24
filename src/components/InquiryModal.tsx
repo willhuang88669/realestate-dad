@@ -65,7 +65,7 @@ export default function InquiryModal({
         >
           <div className="absolute inset-0 bg-black/40" onClick={close} />
 
-          <div className="relative flex w-full max-w-md flex-col gap-4 rounded-t-2xl bg-paper p-5 shadow-2xl sm:rounded-2xl">
+          <div className="relative flex max-h-[85vh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-t-2xl bg-paper p-5 shadow-2xl sm:rounded-2xl">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-ink">
                 {submitted ? "詢問已送出" : "立即詢問"}
@@ -143,7 +143,7 @@ export default function InquiryModal({
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    rows={3}
+                    rows={2}
                     className="resize-none rounded-lg border border-border px-3 py-2.5 text-sm focus:border-navy focus:outline-none"
                   />
                 </label>

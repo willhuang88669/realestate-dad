@@ -18,6 +18,7 @@ import { useListingsStore, type ManagedListing } from "@/lib/listingsStore";
 import AdminNav from "@/components/AdminNav";
 import PillFilter from "@/components/PillFilter";
 import EditListingModal from "@/components/EditListingModal";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
 type Section = "sale" | "rent" | "closed" | "trash";
 
@@ -39,10 +40,18 @@ export default function AdminListingsPage() {
   } = useListingsStore();
   const [section, setSection] = useState<Section>("sale");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [confirmTarget, setConfirmTarget] = useState<
+    { id: string; title: string; action: "trash" | "permanent" } | null
+  >(null);
 
-  function permanentlyDelete(id: string, title: string) {
-    if (!window.confirm(`確定要永久刪除「${title}」嗎？此動作無法復原。`)) return;
-    permanentlyDeleteListing(id);
+  function handleConfirm() {
+    if (!confirmTarget) return;
+    if (confirmTarget.action === "trash") {
+      trashListing(confirmTarget.id);
+    } else {
+      permanentlyDeleteListing(confirmTarget.id);
+    }
+    setConfirmTarget(null);
   }
 
   const grouped = useMemo(() => {
@@ -163,7 +172,9 @@ export default function AdminListingsPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => permanentlyDelete(listing.id, listing.title)}
+                    onClick={() =>
+                      setConfirmTarget({ id: listing.id, title: listing.title, action: "permanent" })
+                    }
                     className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-danger px-4 py-2 text-sm font-bold text-white hover:brightness-95"
                   >
                     <XMarkIcon className="h-3.5 w-3.5" aria-hidden="true" />
@@ -204,7 +215,9 @@ export default function AdminListingsPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => trashListing(listing.id)}
+                    onClick={() =>
+                      setConfirmTarget({ id: listing.id, title: listing.title, action: "trash" })
+                    }
                     className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-danger px-4 py-2 text-sm font-bold text-danger hover:bg-danger hover:text-white"
                   >
                     <TrashIcon className="h-3.5 w-3.5" aria-hidden="true" />
@@ -222,6 +235,20 @@ export default function AdminListingsPage() {
           listing={editingListing}
           onSave={(patch: Partial<Listing>) => updateListing(editingListing.id, patch)}
           onClose={() => setEditingId(null)}
+        />
+      )}
+
+      {confirmTarget && (
+        <ConfirmDialog
+          title={confirmTarget.action === "trash" ? "刪除房源" : "永久刪除房源"}
+          message={
+            confirmTarget.action === "trash"
+              ? `確定要將「${confirmTarget.title}」移到垃圾桶嗎？之後可以在垃圾桶還原。`
+              : `確定要永久刪除「${confirmTarget.title}」嗎？此動作無法復原。`
+          }
+          confirmLabel={confirmTarget.action === "trash" ? "移到垃圾桶" : "永久刪除"}
+          onConfirm={handleConfirm}
+          onCancel={() => setConfirmTarget(null)}
         />
       )}
     </div>
